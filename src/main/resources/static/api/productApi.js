@@ -4,7 +4,7 @@
  */
 const ProductAPI = {
     // Grund-URL til dit API
-    baseUrl: '/services/products',
+    baseUrl: '/api/products',
 
     /**
      * Henter alle produkter fra databasen.
