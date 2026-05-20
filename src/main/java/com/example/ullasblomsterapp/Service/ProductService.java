@@ -1,5 +1,6 @@
 package com.example.ullasblomsterapp.Service;
 
+import com.example.ullasblomsterapp.Model.Occasion; // Husk import!
 import com.example.ullasblomsterapp.Model.Product;
 import com.example.ullasblomsterapp.Model.ProductType;
 import com.example.ullasblomsterapp.Repository.ProductRepository;
@@ -17,16 +18,22 @@ public class ProductService {
         this.repository = repository;
     }
 
-    // 1. Hent alle produkter
     public List<Product> getAllProducts() {
         return repository.findAll();
     }
 
-    // 2. Filtrer produkter efter type
     public List<Product> getProductsByType(ProductType type) {
-        return repository.findAll()
-                .stream()
+        return repository.findAll().stream()
                 .filter(product -> product.getProductType() == type)
                 .collect(Collectors.toList());
+    }
+
+    // NY METODE: Filtrering baseret på Occasion
+    public List<Product> getProductsByOccasion(Occasion occasion) {
+        return repository.findByOccasion(occasion);
+    }
+
+    public Product saveProduct(Product product) {
+        return repository.save(product);
     }
 }

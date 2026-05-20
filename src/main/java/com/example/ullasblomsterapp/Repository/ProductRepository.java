@@ -1,13 +1,11 @@
 package com.example.ullasblomsterapp.Repository;
 
+import com.example.ullasblomsterapp.Model.Occasion;
 import com.example.ullasblomsterapp.Model.Product;
-import com.example.ullasblomsterapp.Model.ProductType;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
-@Repository
-public interface ProductRepository extends JpaRepository<Product, Integer> {
-    List<Product> findByProductType(ProductType type);
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    // Spring Boot genererer automatisk SQL for denne metode!
+    List<Product> findByOccasion(Occasion occasion);
 }
