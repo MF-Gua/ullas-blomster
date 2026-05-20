@@ -1,26 +1,22 @@
+// To prikker (../) betyder: Gå ud af 'components' mappen, og gå ind i 'api' mappen!
 import { OccasionAPI } from '../api/OccasionAPI.js';
 import { OccasionFilter } from '../api/OccasionFilter.js';
-import ProductAPI from '../api/productApi.js';
-import CartAPI from '../api/cartAPI.js';
-import CheckoutButton from '../components/CheckoutButton.js';
-import Cart from '../model/Cart.js';
-import CartItem from '../model/CartItem.js';
+import productApi from "../api/productApi.js";
 
+// En prik (./) betyder: Bliv i 'components' mappen!
 import { Navbar } from './Navbar.js';
 import { Hero } from './Hero.js';
 import { ProductCard } from './ProductCard.js';
 import { Footer } from './Footer.js';
 import { renderCustomBouquetPage } from './CustomBouquetPage.js';
 
-let currentView = 'home';
+let currentView = 'home'; // Kan være 'home' eller 'catalog'
 let productsData = [];
 let occasionsData = [];
 
-const cartAPI = new CartAPI();
-
 async function initApp() {
     try {
-        productsData = await ProductAPI.getAllProducts();
+        productsData = await productApi.getAllProducts();
         occasionsData = await OccasionAPI.getAllOccasions();
         render();
     } catch (error) {
@@ -33,66 +29,15 @@ function navigateTo(view) {
     render();
 }
 
-async function renderCartPage(userId) {
-    const app = document.getElementById('app');
-    const cartData = await cartAPI.getCart(userId);
-    const cart = new Cart(cartData.id, cartData.user);
-    cart.cartItems = cartData.cartItems.map(
-        (item) => new CartItem(item.id, item.productId, item.quantity, item.price)
-    );
-    cart.totalPrice = cartData.totalPrice;
-
-    app.innerHTML = `
-        ${Navbar()}
-        <div class="container" style="padding: 40px 20px;">
-            <h1>Your Cart</h1>
-            <div id="cart-items">
-                ${cart.cartItems.map((item) => `
-                    <div class="cart-item" id="item-${item.id}">
-                        <span>Product ID: ${item.productId}</span>
-                        <input type="number" value="${item.quantity}" min="1"
-                            onchange="updateQuantity(${cart.id}, ${item.id}, this.value)" />
-                        <span>Price: ${item.price} kr</span>
-                        <span>Subtotal: ${item.getSubtotal()} kr</span>
-                        <button onclick="removeItem(${cart.id}, ${item.id})">Remove</button>
-                    </div>
-                `).join("")}
-            </div>
-            <div id="cart-total">
-                <strong>Total: ${cart.totalPrice} kr</strong>
-            </div>
-            <div id="checkout-btn-container"></div>
-        </div>
-        ${Footer()}
-    `;
-
-    CheckoutButton.render("checkout-btn-container", cart.id);
-    setupNavbarListeners();
-}
-
-async function removeItem(cartId, itemId) {
-    await cartAPI.removeItem(cartId, itemId);
-    renderCartPage(1);
-}
-
-async function updateQuantity(cartId, itemId, quantity) {
-    await cartAPI.updateQuantity(cartId, itemId, parseInt(quantity));
-    renderCartPage(1);
-}
-
 function render() {
     const app = document.getElementById('app');
 
-    if (window.location.hash === '#cart') {
-        renderCartPage(1);
-        return;
-    }
-
     if (currentView === 'home') {
+        // --- FORSIDE VISNING ---
         app.innerHTML = `
             ${Navbar()}
             ${Hero(productsData[0], "Sæson/Højtidlighed Fremvisning", "Oplev vores unikke udvalg af sæsonens smukkeste blomster.")}
-            ${Hero(productsData[1] || productsData[0], "Byg din egen buket", "Sammensæt din helt eigen personlige hilsen.", true)}
+            ${Hero(productsData[1] || productsData[0], "Byg din egen buket", "Sammensæt din helt egen personlige hilsen.", true)}
             <section class="catalog">
                 <div class="container">
                     <h2 class="section-title">Katalog Fremvisning</h2>
@@ -111,8 +56,8 @@ function render() {
                 renderCustomBouquetPage();
             });
         }
-
     } else if (currentView === 'catalog') {
+        // --- KATALOG / OCCASION VISNING ---
         app.innerHTML = `
             ${Navbar()}
             <div class="container" style="display: grid; grid-template-columns: 250px 1fr; gap: 40px; padding: 40px 20px;">
@@ -142,6 +87,7 @@ function render() {
             });
         }
 
+        // Aktiver filter-scriptet
         OccasionFilter.init();
     }
 
@@ -173,8 +119,8 @@ function setupNavbarListeners() {
     }
 }
 
-window.removeItem = removeItem;
-window.updateQuantity = updateQuantity;
+window.addEventListener('popstate', function () {
+    initApp();
+});
 
-window.addEventListener('popstate', initApp);
 document.addEventListener('DOMContentLoaded', initApp);

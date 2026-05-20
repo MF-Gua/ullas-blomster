@@ -1,4 +1,4 @@
-import CartAPI from "../services/cartAPI.js";
+import CartAPI from "../api/cartAPI.js";
 import CheckoutButton from "../components/CheckoutButton.js";
 import Cart from "../model/Cart.js";
 import CartItem from "../model/CartItem.js";

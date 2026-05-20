@@ -1,3 +1,14 @@
+DROP TABLE IF EXISTS product;
+CREATE TABLE product (
+                         id SERIAL PRIMARY KEY,
+                         name VARCHAR(255) NOT NULL,
+                         description TEXT,
+                         price DECIMAL(10, 2) NOT NULL,
+                         image_url VARCHAR(500),
+                         product_type VARCHAR(50),
+                         category VARCHAR(50),
+                         occasion VARCHAR(50)
+);
 
 DROP TABLE IF EXISTS custom_bouquet;
 CREATE TABLE custom_bouquet (

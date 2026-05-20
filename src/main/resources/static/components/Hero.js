@@ -8,7 +8,8 @@ export const Hero = (product, title, description, isReverse = false) => `
             <h1>${title}</h1>
             <p>${description}</p>
             <div class="btn-group">
-                <button class="btn-primary">${isReverse ? 'Start Nu' : 'Se Udvalg'}</button>
+                <button class="btn-primary" ${isReverse ? 'id="start-build-bouquet-btn"' : '' }> 
+                ${isReverse ? 'Start Nu' : 'Se Udvalg'}</button>
                 <button class="btn-secondary">${isReverse ? 'Inspiration' : 'Læs Mere'}</button>
             </div>
         </div>

@@ -11,6 +11,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    // Mulighed B: Gør det til en fuld tekst-kolonne i PostgreSQL uden fast grænse
+    @Column(columnDefinition = "TEXT")
     private String description;
     private BigDecimal price;
     private String imageUrl;
