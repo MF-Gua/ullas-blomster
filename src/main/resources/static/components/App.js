@@ -128,5 +128,14 @@ function setupNavbarListeners() {
     }
 }
 
+
 window.addEventListener('popstate', initApp);
 document.addEventListener('DOMContentLoaded', initApp);
+
+
+import { renderCartPage, addToCart, getCartCount } from './cartPage.js';
+
+// Render the page
+case 'cart':
+renderCartPage(mainContent);
+break;

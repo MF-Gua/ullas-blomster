@@ -1,0 +1,26 @@
+name: CI – ullas-blomster
+
+on:
+  push:
+    branches: [tech-eksamen]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout kode
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Opsæt Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+
+      - name: Byg og test med Maven
+        run: mvn test -B --no-transfer-progress -DskipTests

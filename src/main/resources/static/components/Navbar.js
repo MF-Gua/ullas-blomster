@@ -6,6 +6,7 @@ export const Navbar = () => `
         <li><a href="#">Anledninger</a></li>
         <li><a href="#">Katalog</a></li>
         <li><a href="#">Kontakt</a></li>
+        <li><a href="#">Indkøbskurv</a></li>
         <li><a href="/login.html" class="btn-login">Log Ind</a></li>
     </ul>
 </nav>`;
